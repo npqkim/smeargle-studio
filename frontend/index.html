@@ -1,77 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <title>Image Generator</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="container">
+        <h1>mp3 to Image Generator</h1>
 
-<h1>mp3 to Image Generator</h1>
+        <input type="file" id="audioInput" accept=".mp3,.wav">
 
-<input type="file" id="audioInput" accept=".mp3,.wav">
+        <br><br>
 
-<br><br>
+        <label>Choose a genre:</label>
+        <select id="genreSelect">
+            <option value="">Select genre</option>
+            <option value="acoustic">Acoustic</option>
+            <option value="afrobeat">Afrobeat</option>
+            <option value="alternative">Alternative</option>
+            <option value="ambient">Ambient</option>
+            <option value="blues">Blues</option>
+            <option value="classical">Classical</option>
+            <option value="country">Country</option>
+            <option value="dance">Dance</option>
+            <option value="disco">Disco</option>
+            <option value="drill">Drill</option>
+            <option value="drum and bass">Drum and Bass</option>
+            <option value="dubstep">Dubstep</option>
+            <option value="edm">EDM</option>
+            <option value="electronic">Electronic</option>
+            <option value="emo">Emo</option>
+            <option value="folk">Folk</option>
+            <option value="funk">Funk</option>
+            <option value="gospel">Gospel</option>
+            <option value="hard rock">Hard Rock</option>
+            <option value="heavy metal">Heavy Metal</option>
+            <option value="hiphop">Hip-Hop</option>
+            <option value="house">House</option>
+            <option value="indie">Indie</option>
+            <option value="jazz">Jazz</option>
+            <option value="k-pop">K-Pop</option>
+            <option value="latin">Latin</option>
+            <option value="lofi">Lofi</option>
+            <option value="metal">Metal</option>
+            <option value="new age">New Age</option>
+            <option value="opéra">Opera</option>
+            <option value="orchestral">Orchestral</option>
+            <option value="pop">Pop</option>
+            <option value="punk">Punk</option>
+            <option value="r&b">R&B</option>
+            <option value="rap">Rap</option>
+            <option value="reggae">Reggae</option>
+            <option value="reggaeton">Reggaeton</option>
+            <option value="rock">Rock</option>
+            <option value="soul">Soul</option>
+            <option value="synthwave">Synthwave</option>
+            <option value="techno">Techno</option>
+            <option value="trap">Trap</option>
+            <option value="trance">Trance</option>
+            <option value="vaporwave">Vaporwave</option>
+            <option value="world">World</option>
+        </select>
 
-<label>Choose a genre:</label>
-<select id="genreSelect">
-    <option value="">Select genre...</option>
-    <option value="acoustic">Acoustic</option>
-    <option value="afrobeat">Afrobeat</option>
-    <option value="alternative">Alternative</option>
-    <option value="ambient">Ambient</option>
-    <option value="blues">Blues</option>
-    <option value="classical">Classical</option>
-    <option value="country">Country</option>
-    <option value="dance">Dance</option>
-    <option value="disco">Disco</option>
-    <option value="drill">Drill</option>
-    <option value="drum and bass">Drum and Bass</option>
-    <option value="dubstep">Dubstep</option>
-    <option value="edm">EDM</option>
-    <option value="electronic">Electronic</option>
-    <option value="emo">Emo</option>
-    <option value="folk">Folk</option>
-    <option value="funk">Funk</option>
-    <option value="gospel">Gospel</option>
-    <option value="hard rock">Hard Rock</option>
-    <option value="heavy metal">Heavy Metal</option>
-    <option value="hiphop">Hip-Hop</option>
-    <option value="house">House</option>
-    <option value="indie">Indie</option>
-    <option value="jazz">Jazz</option>
-    <option value="k-pop">K-Pop</option>
-    <option value="latin">Latin</option>
-    <option value="lofi">Lofi</option>
-    <option value="metal">Metal</option>
-    <option value="new age">New Age</option>
-    <option value="opéra">Opera</option>
-    <option value="orchestral">Orchestral</option>
-    <option value="pop">Pop</option>
-    <option value="punk">Punk</option>
-    <option value="r&b">R&B</option>
-    <option value="rap">Rap</option>
-    <option value="reggae">Reggae</option>
-    <option value="reggaeton">Reggaeton</option>
-    <option value="rock">Rock</option>
-    <option value="soul">Soul</option>
-    <option value="synthwave">Synthwave</option>
-    <option value="techno">Techno</option>
-    <option value="trap">Trap</option>
-    <option value="trance">Trance</option>
-    <option value="vaporwave">Vaporwave</option>
-    <option value="world">World</option>
-</select>
+        <br><br>
+
+        <label>Or type a custom genre:</label>
+        <input id="genreCustom" placeholder="Custom genre (optional)">
+
+        <br><br>
+
+        <button id="submitBtn">Generate</button>
 
 
-<label>Or type a custom genre:</label>
-<input id="genreCustom" placeholder="Custom genre (optional)">
+        <div id="result"></div>
 
-<button id="submitBtn">Generate</button>
-
-
-<div id="result"></div>
-
-<script src="script.js"></script>
+        <script src="script.js"></script>
+    </div>
 </body>
 </html>
