@@ -1,0 +1,6 @@
+flask
+librosa
+soundfile
+numpy
+openai
+python-multipart
