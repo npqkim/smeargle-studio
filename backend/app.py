@@ -19,7 +19,10 @@ from descriptors import map_descriptors
 from prompt_builder import build_prompt
 from openai_client import generate_image
 
+app = Flask(__name__)
+CORS(app)
 
+@app.route("/analyze", methods=["POST"])
 def analyze_route():
     """
     Receive an uploaded audio file and return extracted audio features.
@@ -31,7 +34,21 @@ def analyze_route():
     Returns:
     - JSON: { "genre": str, "features": dict }
     """
-    # implementation...
+    if "audio" not in request.files:
+        return jsonify({"error": "No audio file provided"}), 400
+
+    audio_file = request.files["audio"]
+    genre = request.form.get("genre", "unknown")
+
+    audio_bytes = audio_file.read()
+
+    # get features
+    features = analyze_audio(audio_bytes)
+
+    return jsonify({
+        "genre": genre,
+        "features": features
+    })
 
 
 def generate_art():
@@ -53,4 +70,39 @@ def generate_art():
         "image_url": str
       }
     """
-    # implementation...
+    if "audio" not in request.files:
+        return jsonify({"error": "No audio file provided"}), 400
+
+    audio_file = request.files["audio"]
+    genre = request.form.get("genre", None)
+
+    if not genre:
+        return jsonify({"error": "Genre is missing"}), 400
+
+    audio_bytes = audio_file.read()
+
+    # 1) Extract numeric features
+    features = analyze_audio(audio_bytes)
+
+    # 2) Convert numeric features → English descriptors
+    descriptors = map_descriptors(features)
+
+    # 3) Build OpenAI prompt string
+    prompt = build_prompt(genre, descriptors)
+
+    # 4) Call OpenAI and retrieve generated image URL
+    image_url = generate_image(prompt)
+
+    return jsonify({
+        "prompt": prompt,
+        "descriptors": descriptors,
+        "image_url": image_url
+    })
+
+@app.route("/", methods=["GET"])
+def home():
+    return "Smeargle Studio Backend Running!"
+
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5001, debug=True)
