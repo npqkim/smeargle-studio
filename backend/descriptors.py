@@ -15,72 +15,64 @@ def map_descriptors(features):
 
     Parameters:
     - features (dict): {
-          "tempo": float,
-          "brightness": float,
-          "rms": float,
-          "percussive_ratio": float
-      }
+        "tempo": float,
+        "brightness": float,
+        "rms": float,
+        "percussive_ratio": float
+    }
 
     Returns:
     - dict: {
-          "tempo_desc": str,
-          "brightness_desc": str,
-          "rms_desc": str,
-          "percussive_desc": str
-      }
+        "tempo_desc": str,
+        "brightness_desc": str,
+        "rms_desc": str,
+        "percussive_desc": str
+    }
     """
     tempo = features.get("tempo", 0)
     brightness = features.get("brightness", 0)
     rms = features.get("rms", 0)
     percussive_ratio = features.get("percussive_ratio", 0)
 
-    # Tempo -> energy/motion
+    # Tempo -> agility / movement / combat style
     if tempo < 50:
-        tempo_desc = "slow and reflective"
+        tempo_desc = "calm and deliberate, a strategist or healer"
     elif tempo < 80:
-        tempo_desc = "gentle and flowing"
+        tempo_desc = "graceful and measured, a skilled archer or scout"
     elif tempo < 120:
-        tempo_desc = "moderately lively"
+        tempo_desc = "alert and responsive, a versatile adventurer"
     elif tempo < 150:
-        tempo_desc = "energetic and dynamic"
+        tempo_desc = "swift and aggressive, a frontline fighter"
     else:
-        tempo_desc = "highly intense and fast-paced"
+        tempo_desc = "hyperactive and relentless, a berserker or speedster"
 
-    # Brightness -> mood/light/color
-    if brightness < 0.2:
-        brightness_desc = "dark and moody"
-    elif brightness < 0.4:
-        brightness_desc = "soft and warm"
-    elif brightness < 0.6:
-        brightness_desc = "balanced and neutral"
-    elif brightness < 0.8:
-        brightness_desc = "bright and vibrant"
+    # Brightness -> mood / aura
+    if brightness < 1000:
+        brightness_desc = "soft and intimate"
+    elif brightness < 2000:
+        brightness_desc = "gentle and wistful"
+    elif brightness < 3000:
+        brightness_desc = "vivid and bold"
     else:
-        brightness_desc = "very luminous and radiant"
+        brightness_desc = "blazing and electrifying"
 
-    # RMS -> intensity/impact
-    if rms < 0.01:
-        rms_desc = "whisper-quiet and subtle"
-    elif rms < 0.03:
-        rms_desc = "soft and intimate"
-    elif rms < 0.06:
-        rms_desc = "moderately expressive"
+    # RMS -> emotional intensity / impact
+    if rms < 0.05:
+        rms_desc = "subtle and introspective"
     elif rms < 0.1:
-        rms_desc = "loud and striking"
+        rms_desc = "expressive yet restrained"
+    elif rms < 0.2:
+        rms_desc = "powerful and commanding"
     else:
-        rms_desc = "powerful and overwhelming"
+        rms_desc = "immense and overwhelming"
 
-    # Percussive ratio -> rhythm/texture
+    # Percussive ratio -> rhythmic character / feel
     if percussive_ratio < 0.2:
-        percussive_desc = "smooth and flowing textures"
-    elif percussive_ratio < 0.4:
-        percussive_desc = "delicate rhythmic elements"
+        percussive_desc = "subtle, with gentle rhythmic undertones"
     elif percussive_ratio < 0.6:
-        percussive_desc = "balanced rhythmic patterns"
-    elif percussive_ratio < 0.8:
-        percussive_desc = "strongly percussive and patterned"
+        percussive_desc = "balanced and flowing rhythm"
     else:
-        percussive_desc = "highly percussive and intricate textures"
+        percussive_desc = "relentless, driving, and intense"
 
     return {
         "tempo_desc": tempo_desc,

@@ -25,10 +25,11 @@ def build_prompt(genre, descriptors):
     percussive_desc = descriptors.get("percussive_desc", "")
 
     prompt = (
-        f"Design a {genre}-inspired fantasy RPG character that embodies {tempo_desc}, "
-        f"has a {brightness_desc} appearance, exudes a {rms_desc} aura, "
-        f"and features {percussive_desc} in their outfit, weapons, or magical abilities. "
-        "Provide vivid details and imaginative elements to make the character suitable for a role-playing game."
+    f"Create a {genre}-inspired fantasy RPG character who embodies {tempo_desc}. "
+    f"They possess a {brightness_desc} presence, carry the {rms_desc} weight of their power, "
+    f"and demonstrate {percussive_desc} in their fighting style, movements, or magical abilities. "
+    "Include rich details about their armor, weapons, magical skills, and personality traits, "
+    "making them ready for an epic role-playing adventure."
     )
 
     return prompt

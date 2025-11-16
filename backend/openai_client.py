@@ -21,30 +21,21 @@ def generate_image(prompt, filename = "output.png"):
     - str: URL pointing to the generated image.
     """
     try:
-
-        print("📤 Sending prompt to OpenAI...")
-        print(prompt)
-
         response = client.images.generate(
             model="gpt-image-1",
             prompt=prompt,
-            size="720x720",
-            response_format="b64_json"
+            size="1024x1024",
+            n=1
         )
 
-        print("✅ OpenAI responded successfully")
+        # Get base64 image data
+        image_b64 = response.data[0].b64_json
+        image_bytes = base64.b64decode(image_b64)
 
-        # Decode base64 image
-        img_data = response.data[0].b64_json
-        img_bytes = base64.b64decode(img_data)
-        
+        # Save to file
         with open(filename, "wb") as f:
-            f.write(img_bytes)
-
-        print(f"💾 Image saved: {filename}")
+            f.write(image_bytes)
         return filename
 
     except Exception as e:
-        print("❌ ERROR in generate_image():")
-        print(e)
         return None
