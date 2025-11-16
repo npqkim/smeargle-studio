@@ -72,6 +72,38 @@
         <br><br>
 
         <button id="submitBtn">Generate</button>
+        <script>
+        document.getElementById("generate-btn").addEventListener("click", async () => {
+            // Optional: show loading state
+            document.getElementById("generate-btn").innerText = "Generating...";
+            
+            // 1. Send request to your backend
+            const response = await fetch("/generate", {
+                method: "POST",
+            });
+
+            // 2. Receive the backend response
+            const data = await response.json();
+
+            // data.image_url - URL to generated image
+            // data.description - character personality text
+
+            // 3. Save the results so next page can use them
+            localStorage.setItem("generatedImageUrl", data.image_url);
+            localStorage.setItem("generatedDescription", data.description);
+
+            // 4. Redirect automatically to result page
+            window.location.href = "result.html";
+        });
+        </script>
+        <!-- <script>
+        document.getElementById("submitBtn").addEventListener("click", () => {
+            console.log("Generate button clicked!");
+
+            // TEMPORARY TEST REDIRECT
+            window.location.href = "result.html";
+        });
+        </script> -->
 
 
         <div id="result"></div>
