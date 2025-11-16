@@ -6,7 +6,7 @@ Main Flask backend application.
 Routes:
 - /analyze: Extracts audio features from uploaded file.
 - /generate_art: Performs full pipeline:
-      audio → features → descriptors → prompt → OpenAI → image_url
+      audio -> features -> descriptors -> prompt -> OpenAI -> image_url
 
 Handles form-data uploads from the frontend and returns JSON responses.
 """
@@ -58,7 +58,7 @@ def generate_art():
     Steps:
     1. Read audio + genre from request
     2. Extract audio features
-    3. Convert features → descriptive keywords
+    3. Convert features -> descriptive keywords
     4. Build final art prompt
     5. Call OpenAI to generate image
     6. Return image_url to frontend
@@ -84,7 +84,7 @@ def generate_art():
     # 1) Extract numeric features
     features = analyze_audio(audio_bytes)
 
-    # 2) Convert numeric features → English descriptors
+    # 2) Convert numeric features -> English descriptors
     descriptors = map_descriptors(features)
 
     # 3) Build OpenAI prompt string

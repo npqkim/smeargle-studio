@@ -32,7 +32,7 @@ def analyze_audio(audio_bytes):
     audio_buffer = io.BytesIO(audio_bytes)
     signal, sr = sf.read(audio_buffer, dtype="float32")
 
-    # Convert stereo → mono
+    # Convert stereo -> mono
     if len(signal.shape) > 1:
         signal = np.mean(signal, axis=1)
 

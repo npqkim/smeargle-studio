@@ -19,4 +19,15 @@ def build_prompt(genre, descriptors):
     Returns:
     - str: Final descriptive prompt for image generation.
     """
-    # implementation...
+    tempo_desc = descriptors.get("tempo_desc", "")
+    brightness_desc = descriptors.get("brightness_desc", "")
+    rms_desc = descriptors.get("rms_desc", "")
+    percussive_desc = descriptors.get("percussive_desc", "")
+
+    prompt = (
+        f"Create a {genre}-inspired artwork that is {tempo_desc}, "
+        f"{brightness_desc}, {rms_desc}, and features {percussive_desc}. "
+        "Use vivid imagery and artistic interpretation to reflect the audio characteristics."
+    )
+
+    return prompt
