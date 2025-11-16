@@ -36,61 +36,61 @@ def map_descriptors(features):
 
     # RMS -> emotional tone of the character
     if rms < 0.05:
-        emotion_desc = "emotionally reserved with a calm, collected presence"
+        rms_desc = "emotionally reserved with a calm, collected presence"
     elif rms < 0.1:
-        emotion_desc = "soft-spoken but emotionally aware and thoughtful"
+        rms_desc = "soft-spoken but emotionally aware and thoughtful"
     elif rms < 0.2:
-        emotion_desc = "passionate and expressive, emotions close to the surface"
+        rms_desc = "passionate and expressive, emotions close to the surface"
     else:
-        emotion_desc = "intense, volatile, and overwhelmingly emotional"
+        rms_desc = "intense, volatile, and overwhelmingly emotional"
 
     # Brightness -> color scheme vividness / aura
     if brightness < 1000:
-        color_desc = "muted, low-saturation colors with a soft, understated palette"
+        brightness_desc = "muted, low-saturation colors with a soft, understated palette"
     elif brightness < 2000:
-        color_desc = "gentle mid-tone colors with subtle accents"
+        brightness_desc = "gentle mid-tone colors with subtle accents"
     elif brightness < 3000:
-        color_desc = "vivid, high-contrast colors with bold highlights"
+        brightness_desc = "vivid, high-contrast colors with bold highlights"
     else:
-        color_desc = "hyper-saturated, electrifying colors that almost glow"
+        brightness_desc = "hyper-saturated, electrifying colors that almost glow"
 
     # Percussive ratio -> fashion style: grungy ↔ light/airy
     if percussive_ratio < 0.2:
-        style_desc = "light, airy fashion with flowing fabrics and clean lines"
+        percussive_desc = "light, airy fashion with flowing fabrics and clean lines"
     elif percussive_ratio < 0.6:
-        style_desc = "balanced, modern streetwear with a mix of soft and structured pieces"
+        percussive_desc = "balanced, modern streetwear with a mix of soft and structured pieces"
     else:
-        style_desc = "grungy, layered fashion with worn textures, rips, and metallic details"
+        percussive_desc = "grungy, layered fashion with worn textures, rips, and metallic details"
 
     # Tempo -> combat strength ↔ intellect/nerdy axis
     if tempo < 60:
-        combat_intellect_desc = (
+        tempo_desc = (
             "a highly intellectual, bookish character who relies on strategy and knowledge "
             "far more than physical strength"
         )
     elif tempo < 90:
-        combat_intellect_desc = (
+        tempo_desc = (
             "a clever tactician who balances mental sharpness with just enough physical skill "
             "to hold their own"
         )
     elif tempo < 130:
-        combat_intellect_desc = (
+        tempo_desc = (
             "a capable fighter with quick reactions, guided by instinct as much as thought"
         )
     elif tempo < 160:
-        combat_intellect_desc = (
+        tempo_desc = (
             "a fierce close-combat specialist who solves problems head-on rather than with careful planning"
         )
     else:
-        combat_intellect_desc = (
+        tempo_desc = (
             "a hyper-aggressive powerhouse who charges in first and thinks later"
         )
 
     # Combined character descriptor for prompt generation
     character_descriptor = (
-        f"A fictional character who is {emotion_desc}. "
-        f"They are depicted with {color_desc}, wearing {style_desc}. "
-        f"They are {combat_intellect_desc}."
+        f"A fictional character who is {rms_desc}. "
+        f"They are depicted with {brightness_desc}, wearing {percussive_desc}. "
+        f"They are {tempo_desc}."
     )
 
     return {
