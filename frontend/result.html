@@ -1,0 +1,23 @@
+<h1>Your Generated Character</h1>
+
+<div class="result-box">
+    <img id="character-image" alt="Generated Character">
+
+    <p id="character-description"></p>
+</div>
+
+<button id="back-btn">Upload Another Song</button>
+<script>
+    // 1. Load stored info
+    const imgUrl = localStorage.getItem("generatedImageUrl");
+    const description = localStorage.getItem("generatedDescription");
+
+    // 2. Insert into page
+    document.getElementById("character-image").src = imgUrl;
+    document.getElementById("character-description").textContent = description;
+
+    // 3. Back button
+    document.getElementById("back-btn").addEventListener("click", () => {
+        window.location.href = "index.html";
+    });
+</script>

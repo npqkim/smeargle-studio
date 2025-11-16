@@ -11,13 +11,14 @@ Routes:
 Handles form-data uploads from the frontend and returns JSON responses.
 """
 
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 
 from analyze import analyze_audio
 from descriptors import map_descriptors
 from prompt_builder import build_prompt
 from openai_client import generate_image
+import os
 
 app = Flask(__name__)
 CORS(app)
@@ -74,6 +75,7 @@ def generate_art():
         return jsonify({"error": "No audio file provided"}), 400
 
     audio_file = request.files["audio"]
+    print("Received audio file:", audio_file)
     genre = request.form.get("genre", None)
 
     if not genre:
@@ -92,13 +94,29 @@ def generate_art():
     prompt = build_prompt(genre, descriptors)
 
     # 4) Call OpenAI and retrieve generated image URL
-    image_url = generate_image(prompt)
+    image_filename = generate_image(prompt)
+
+    if not image_filename:
+        return jsonify({"error": "Image generation failed"}), 500
+
+    # Build a full URL the frontend can GET. Serve files from the backend folder
+    # via the /images/<filename> route defined below.
+    image_url = request.host_url.rstrip("/") + "/images/" + image_filename
 
     return jsonify({
-        "prompt": prompt,
-        "descriptors": descriptors,
         "image_url": image_url
     })
+
+
+@app.route('/images/<path:filename>', methods=["GET"])
+def serve_image(filename):
+    """Serve generated images from the backend directory so the frontend can load them.
+
+    Security note: this serves files only from the backend app directory. If you
+    later write files to a different folder, adjust the path accordingly.
+    """
+    backend_dir = os.path.abspath(os.path.dirname(__file__))
+    return send_from_directory(backend_dir, filename)
 
 @app.route("/generate_art", methods=["POST"])
 def generate_art_route():

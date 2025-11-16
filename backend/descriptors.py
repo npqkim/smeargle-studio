@@ -34,45 +34,64 @@ def map_descriptors(features):
     rms = features.get("rms", 0)
     percussive_ratio = features.get("percussive_ratio", 0)
 
-    # Tempo -> agility / movement / combat style
-    if tempo < 50:
-        tempo_desc = "calm and deliberate, a strategist or healer"
-    elif tempo < 80:
-        tempo_desc = "graceful and measured, a skilled archer or scout"
-    elif tempo < 120:
-        tempo_desc = "alert and responsive, a versatile adventurer"
-    elif tempo < 150:
-        tempo_desc = "swift and aggressive, a frontline fighter"
-    else:
-        tempo_desc = "hyperactive and relentless, a berserker or speedster"
-
-    # Brightness -> mood / aura
-    if brightness < 1000:
-        brightness_desc = "soft and intimate"
-    elif brightness < 2000:
-        brightness_desc = "gentle and wistful"
-    elif brightness < 3000:
-        brightness_desc = "vivid and bold"
-    else:
-        brightness_desc = "blazing and electrifying"
-
-    # RMS -> emotional intensity / impact
+    # RMS -> emotional tone of the character
     if rms < 0.05:
-        rms_desc = "subtle and introspective"
+        emotion_desc = "emotionally reserved with a calm, collected presence"
     elif rms < 0.1:
-        rms_desc = "expressive yet restrained"
+        emotion_desc = "soft-spoken but emotionally aware and thoughtful"
     elif rms < 0.2:
-        rms_desc = "powerful and commanding"
+        emotion_desc = "passionate and expressive, emotions close to the surface"
     else:
-        rms_desc = "immense and overwhelming"
+        emotion_desc = "intense, volatile, and overwhelmingly emotional"
 
-    # Percussive ratio -> rhythmic character / feel
-    if percussive_ratio < 0.2:
-        percussive_desc = "subtle, with gentle rhythmic undertones"
-    elif percussive_ratio < 0.6:
-        percussive_desc = "balanced and flowing rhythm"
+    # Brightness -> color scheme vividness / aura
+    if brightness < 1000:
+        color_desc = "muted, low-saturation colors with a soft, understated palette"
+    elif brightness < 2000:
+        color_desc = "gentle mid-tone colors with subtle accents"
+    elif brightness < 3000:
+        color_desc = "vivid, high-contrast colors with bold highlights"
     else:
-        percussive_desc = "relentless, driving, and intense"
+        color_desc = "hyper-saturated, electrifying colors that almost glow"
+
+    # Percussive ratio -> fashion style: grungy ↔ light/airy
+    if percussive_ratio < 0.2:
+        style_desc = "light, airy fashion with flowing fabrics and clean lines"
+    elif percussive_ratio < 0.6:
+        style_desc = "balanced, modern streetwear with a mix of soft and structured pieces"
+    else:
+        style_desc = "grungy, layered fashion with worn textures, rips, and metallic details"
+
+    # Tempo -> combat strength ↔ intellect/nerdy axis
+    if tempo < 60:
+        combat_intellect_desc = (
+            "a highly intellectual, bookish character who relies on strategy and knowledge "
+            "far more than physical strength"
+        )
+    elif tempo < 90:
+        combat_intellect_desc = (
+            "a clever tactician who balances mental sharpness with just enough physical skill "
+            "to hold their own"
+        )
+    elif tempo < 130:
+        combat_intellect_desc = (
+            "a capable fighter with quick reactions, guided by instinct as much as thought"
+        )
+    elif tempo < 160:
+        combat_intellect_desc = (
+            "a fierce close-combat specialist who solves problems head-on rather than with careful planning"
+        )
+    else:
+        combat_intellect_desc = (
+            "a hyper-aggressive powerhouse who charges in first and thinks later"
+        )
+
+    # Combined character descriptor for prompt generation
+    character_descriptor = (
+        f"A fictional character who is {emotion_desc}. "
+        f"They are depicted with {color_desc}, wearing {style_desc}. "
+        f"They are {combat_intellect_desc}."
+    )
 
     return {
         "tempo_desc": tempo_desc,
