@@ -35,9 +35,9 @@ def map_descriptors(features):
     percussive_ratio = features.get("percussive_ratio", 0)
 
     # Tempo -> energy/motion
-    if tempo < 60:
-        tempo_desc = "calm and slow-moving"
-    elif tempo < 90:
+    if tempo < 50:
+        tempo_desc = "slow and reflective"
+    elif tempo < 80:
         tempo_desc = "gentle and flowing"
     elif tempo < 120:
         tempo_desc = "moderately lively"
@@ -50,7 +50,7 @@ def map_descriptors(features):
     if brightness < 0.2:
         brightness_desc = "dark and moody"
     elif brightness < 0.4:
-        brightness_desc = "somber yet rich"
+        brightness_desc = "soft and warm"
     elif brightness < 0.6:
         brightness_desc = "balanced and neutral"
     elif brightness < 0.8:
@@ -61,11 +61,11 @@ def map_descriptors(features):
     # RMS -> intensity/impact
     if rms < 0.01:
         rms_desc = "whisper-quiet and subtle"
-    elif rms < 0.02:
-        rms_desc = "soft and gentle"
-    elif rms < 0.04:
-        rms_desc = "moderately expressive"
+    elif rms < 0.03:
+        rms_desc = "soft and intimate"
     elif rms < 0.06:
+        rms_desc = "moderately expressive"
+    elif rms < 0.1:
         rms_desc = "loud and striking"
     else:
         rms_desc = "powerful and overwhelming"
@@ -74,9 +74,9 @@ def map_descriptors(features):
     if percussive_ratio < 0.2:
         percussive_desc = "smooth and flowing textures"
     elif percussive_ratio < 0.4:
-        percussive_desc = "softly rhythmic patterns"
+        percussive_desc = "delicate rhythmic elements"
     elif percussive_ratio < 0.6:
-        percussive_desc = "balanced rhythmic elements"
+        percussive_desc = "balanced rhythmic patterns"
     elif percussive_ratio < 0.8:
         percussive_desc = "strongly percussive and patterned"
     else:

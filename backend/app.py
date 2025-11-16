@@ -85,6 +85,7 @@ def generate_art():
     features = analyze_audio(audio_bytes)
 
     # 2) Convert numeric features -> English descriptors
+    print("Raw audio features:", features)
     descriptors = map_descriptors(features)
 
     # 3) Build OpenAI prompt string
@@ -98,6 +99,14 @@ def generate_art():
         "descriptors": descriptors,
         "image_url": image_url
     })
+
+@app.route("/generate_art", methods=["POST"])
+def generate_art_route():
+    """
+    Flask route wrapping the generate_art function.
+    This exposes the full pipeline to the frontend.
+    """
+    return generate_art()
 
 @app.route("/", methods=["GET"])
 def home():
