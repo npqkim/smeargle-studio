@@ -7,13 +7,16 @@
 </head>
 <body>
     <div class="container">
-        <h1>mp3 to Image Generator</h1>
+        <h1>Song to Fantasy Character Generator</h1>
 
-        <input type="file" id="audioInput" accept=".mp3,.wav">
+    <input id="file-upload" type="file" accept=".mp3" />
 
+    <label for="file-upload" class="circle-upload">
+        <img src="images/upload_icon.png" class="circle-icon">
+    </label>
         <br><br>
 
-        <label>Choose a genre:</label>
+        <!-- <label>Choose a genre:</label>
         <select id="genreSelect">
             <option value="">Select genre</option>
             <option value="acoustic">Acoustic</option>
@@ -61,12 +64,10 @@
             <option value="trance">Trance</option>
             <option value="vaporwave">Vaporwave</option>
             <option value="world">World</option>
-        </select>
+        </select> -->
 
         <br><br>
-
-        <label>Or type a custom genre:</label>
-        <input id="genreCustom" placeholder="Custom genre (optional)">
+        <input id="genreCustom" placeholder="enter a genre...">
 
         <br><br>
 

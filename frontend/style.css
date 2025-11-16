@@ -1,9 +1,10 @@
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    min-height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, 
+                 "SF Pro Text", "SF Pro Display",
+                 "Helvetica Neue", Arial, sans-serif;    min-height: 100vh;
     margin: 0;
     padding: 0;
-    color: #333;
+    color: rgba(0, 0, 0, 0.635);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -16,6 +17,9 @@ body {
     );
     background-size: 300% 300%;
     animation: gradientShift 20s ease infinite;
+
+    position: relative;
+    overflow: hidden;
 }
 
 @keyframes gradientShift {
@@ -27,9 +31,9 @@ body {
 h1 {
     padding-bottom: 20px;
     font-size: 2.5em;
-    color: #222;
+    color: rgba(0, 0, 0, 0.635);
     margin-bottom: 20px;
-    text-shadow: 1px 1px 4px rgba(0,0,0,0.2);
+    /* text-shadow: 4px 4px 4px rgba(0,0,0,0.2); */
 }
 
 p {
@@ -40,19 +44,30 @@ p {
 }
 
 .container {
-    max-width: 600px;
-    min-height: 350px;
-    margin: 50px auto 150px;
-    padding: 50px;
-    border-radius: 20px;
-    box-shadow: 0 12px 35px rgba(0,0,0,0.25);
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(8px);
+    position: relative;
+    max-width: 650px;
+    min-height: 300px;
+    margin: 50px auto;
+    padding: 40px;
+
+    /* Brighter, whiter frost */
+    background: rgba(255, 255, 255, 0.22); /* Was 0.12 → now frostier */
+
+    /* Stronger blur = heavier frost */
+    backdrop-filter: blur(35px) saturate(160%);
+    background: rgba(255, 255, 255, 0.30);
+    border-radius: 30px;
+
+    /* Subtle but more present inner white diffusion */
+    box-shadow:
+        0 12px 28px rgba(133, 133, 133, 0.2),
+        inset 0 0 35px rgba(255, 255, 255, 0.10), /* stronger */
+        inset 0 0 75px rgba(255, 255, 255, 0.06); /* deeper glow */
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: 0.3s ease;
 }
 
 .container:hover {
@@ -64,11 +79,78 @@ p {
 .container select {
     width: 80%;
     margin: 12px 0;
-    padding: 12px 15px;
+    padding: 12px 45px 12px 45px; /* space for icon */
     font-size: 16px;
-    border-radius: 12px;
-    border: 1px solid #ccc;
-    transition: all 0.2s ease;
+
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.35); /* translucent border */
+    background: rgba(255, 255, 255, 0.15);       /* frosted fill */
+    backdrop-filter: blur(10px) saturate(150%);
+    -webkit-backdrop-filter: blur(10px) saturate(150%);
+
+    color: rgba(170, 170, 170, 0.635);
+    outline: none;
+    transition: all 0.25s ease;
+
+    /* ICON (default: upload icon, can replace) */
+    background-image: url("../images/upload-icon.png");
+    background-repeat: no-repeat;
+    background-position: 14px center;
+    background-size: 20px;
+}
+/* hide the ugly default file input */
+#file-upload {
+    display: none;
+}
+
+/* round frosted upload button */
+.circle-upload {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    cursor: pointer;
+
+    background: rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(14px) saturate(150%);
+    -webkit-backdrop-filter: blur(14px) saturate(150%);
+
+    /* border: 2px solid rgba(255,255,255,0.35); */
+    box-shadow: 0 8px 22px rgba(0,0,0,0.25);
+
+    transition: all 0.25s ease;
+    margin: 2px auto; /* center horizontally */
+}
+
+/* hover effect */
+.circle-upload:hover {
+    background: rgba(255, 255, 255, 0.26);
+    transform: scale(1.05);
+    box-shadow: 0 10px 28px rgba(0,0,0,0.32);
+}
+
+/* active press effect */
+.circle-upload:active {
+    transform: scale(0.95);
+}
+
+/* the icon inside the circle */
+.circle-icon {
+    width: 40px;
+    height: 40px;
+    opacity: 0.9;
+    pointer-events: none; /* so icon doesn't block clicks */
+}
+
+/* Focus state: glowing translucent border */
+.container input:focus,
+.container select:focus {
+    border: 1.5px solid rgba(255, 255, 255, 0);
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.22);
 }
 
 .container input:focus,
@@ -79,19 +161,38 @@ p {
 }
 
 button {
-    padding: 12px 30px;
+    padding: 14px 34px;
     margin-top: 15px;
     cursor: pointer;
-    background: linear-gradient(
-        45deg,
-        rgba(42, 123, 155, 1));
-    color: #fff;
-    border: none;
-    border-radius: 12px;
-    font-weight: bold;
+
+    /* Frosted glass fill */
+    background: rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(14px) saturate(150%);
+    -webkit-backdrop-filter: blur(14px) saturate(150%);
+
+    /* Border & roundness */ 
+    border: 1px solid rgba(168, 168, 168, 0);
+    border-radius: 16px;
+
+    /* Font */
+    color: rgba(0, 0, 0, 0.635);
+    font-weight: 600;
     font-size: 16px;
-    transition: all 0.3s ease;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    letter-spacing: 0.3px;
+
+    /* Soft shadow */
+    box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+
+    transition: all 0.25s ease;
+}
+
+button:hover {
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 8px 22px rgba(0,0,0,0.25);
+}
+
+button:active {
+    transform: scale(0.97);
 }
 
 button:hover {
