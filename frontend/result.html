@@ -1,23 +1,38 @@
-<h1>Your Generated Character</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Your Generated Character</title>
+    <link rel="stylesheet" href="result.css" />
+</head>
+<body>
+    <h1>Your Generated Character</h1>
 
-<div class="result-box">
-    <img id="character-image" alt="Generated Character">
+    <div class="result-box">
+        <img id="character-image" alt="Generated Character" />
+        <p id="character-description"></p>
+    </div>
 
-    <p id="character-description"></p>
-</div>
+    <button id="back-btn">Upload Another Song</button>
 
-<button id="back-btn">Upload Another Song</button>
-<script>
-    // 1. Load stored info
-    const imgUrl = localStorage.getItem("generatedImageUrl");
-    const description = localStorage.getItem("generatedDescription");
+    <script>
+        // 1. Load stored info
+        const imgUrl = localStorage.getItem("generatedImageUrl");
+        const description = localStorage.getItem("generatedDescription");
 
-    // 2. Insert into page
-    document.getElementById("character-image").src = imgUrl;
-    document.getElementById("character-description").textContent = description;
+        // 2. Insert into page (guard against missing values)
+        if (imgUrl) {
+            document.getElementById("character-image").src = imgUrl;
+        }
+        if (description) {
+            document.getElementById("character-description").textContent = description;
+        }
 
-    // 3. Back button
-    document.getElementById("back-btn").addEventListener("click", () => {
-        window.location.href = "index.html";
-    });
-</script>
+        // 3. Back button
+        document.getElementById("back-btn").addEventListener("click", () => {
+            window.location.href = "index.html";
+        });
+    </script>
+</body>
+</html>

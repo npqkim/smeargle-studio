@@ -1,0 +1,61 @@
+/* Inherit the index page aesthetic */
+@import url('style.css');
+
+/* Result page layout tweaks */
+body {
+  /* On index there's a single .container; here we have multiple elements,
+     so stack them vertically while keeping the centered feel. */
+  flex-direction: column;
+  gap: 16px;
+  padding: 40px 16px;
+  /* Override global overflow hidden from style.css to allow scrolling */
+  overflow-y: auto;
+}
+
+/* Ensure noise texture resolves correctly relative to this file */
+body::before {
+  background: url('images/noise.png');
+  background-size: 50px 50px;
+  opacity: 1;
+  mix-blend-mode: overlay;
+}
+
+/* Make the main result area feel like the same glass card */
+.result-box {
+  max-width: 700px;
+  width: 100%;
+  min-height: 350px;
+  margin: 0 auto;
+  padding: 32px;
+  border-radius: 20px;
+  box-shadow: 0 12px 35px rgba(0,0,0,0.25);
+  background: rgba(255, 255, 255, 0.22); /* Was 0.12 → now frostier */
+  backdrop-filter: blur(8px);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1 {
+  margin: 0 0 8px 0;
+}
+
+#character-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  margin: 12px 0 20px 0;
+}
+
+#character-description {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: #444;
+  margin: 0;
+}
+
+#back-btn {
+  margin-top: 12px;
+}

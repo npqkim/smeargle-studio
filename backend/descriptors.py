@@ -8,8 +8,30 @@ This module interprets audio features from analyze.py into words suitable
 for prompt generation.
 """
 
+GENRE_STYLES = {
+    "rock": "edgy, bold, energetic, rebellious",
+    "r&b": "smooth, expressive, soulful, elegant",
+    "jazz": "improvisational, relaxed, artistic, vibrant",
+    "edm": "futuristic, neon-lit, dynamic, high-energy",
+    "lofi": "chill, cozy, muted colors, soft",
+    "hip hop": "confident, rhythmic, urban, streetwise",
+    "pop": "bright, upbeat, charismatic, approachable",
+    "metal": "intense, dark, powerful, fierce",
+    "blues": "soulful, moody, expressive, raw",
+    "classical": "refined, graceful, harmonious, elegant",
+    "reggae": "laid-back, colorful, warm, rhythmic",
+    "country": "grounded, rustic, earthy, down-to-earth",
+    "folk": "natural, storytelling, simple, heartfelt",
+    "punk": "rebellious, raw, energetic, bold",
+    "soul": "emotional, expressive, warm, intimate",
+    "funk": "groovy, vibrant, playful, rhythmic",
+    "techno": "mechanical, precise, futuristic, high-energy",
+    "house": "smooth, pulsating, vibrant, rhythmic",
+    "trap": "dark, edgy, intense, bold",
+    "ambient": "ethereal, soft, atmospheric, dreamy"
+}
 
-def map_descriptors(features):
+def map_descriptors(features, genre="unknown"):
     """
     Convert audio feature values into descriptive terms.
 
@@ -29,73 +51,52 @@ def map_descriptors(features):
         "percussive_desc": str
     }
     """
-    tempo = features.get("tempo", 0)
-    brightness = features.get("brightness", 0)
-    rms = features.get("rms", 0)
-    percussive_ratio = features.get("percussive_ratio", 0)
 
-    # RMS -> emotional tone of the character
-    if rms < 0.05:
-        emotion_desc = "emotionally reserved with a calm, collected presence"
-    elif rms < 0.1:
-        emotion_desc = "soft-spoken but emotionally aware and thoughtful"
-    elif rms < 0.2:
-        emotion_desc = "passionate and expressive, emotions close to the surface"
+    descriptors = {}
+
+    # Tempo
+    tempo = min(max(features.get("tempo", 0) / 200, 0), 1)
+    if tempo < 0.45:
+        descriptors["tempo_desc"] = "slow"
+    elif tempo < 0.65:
+        descriptors["tempo_desc"] = "moderate"
     else:
-        emotion_desc = "intense, volatile, and overwhelmingly emotional"
+        descriptors["tempo_desc"] = "fast"
 
-    # Brightness -> color scheme vividness / aura
-    if brightness < 1000:
-        color_desc = "muted, low-saturation colors with a soft, understated palette"
-    elif brightness < 2000:
-        color_desc = "gentle mid-tone colors with subtle accents"
-    elif brightness < 3000:
-        color_desc = "vivid, high-contrast colors with bold highlights"
+    # Brightness
+    brightness = min(max(features.get("brightness", 0) / 4000, 0), 1)
+    if brightness < 0.25:
+        descriptors["brightness_desc"] = "soft"
+    elif brightness < 0.6:
+        descriptors["brightness_desc"] = "balanced"
     else:
-        color_desc = "hyper-saturated, electrifying colors that almost glow"
+        descriptors["brightness_desc"] = "bright"
 
-    # Percussive ratio -> fashion style: grungy ↔ light/airy
-    if percussive_ratio < 0.2:
-        style_desc = "light, airy fashion with flowing fabrics and clean lines"
-    elif percussive_ratio < 0.6:
-        style_desc = "balanced, modern streetwear with a mix of soft and structured pieces"
+    # RMS / intensity
+    rms = min(max(features.get("rms", 0), 0), 1)
+    if rms < 0.2:
+        descriptors["rms_desc"] = "soft"
+    elif rms < 0.5:
+        descriptors["rms_desc"] = "steady"
+    elif rms < 0.8:
+        descriptors["rms_desc"] = "lively"
     else:
-        style_desc = "grungy, layered fashion with worn textures, rips, and metallic details"
+        descriptors["rms_desc"] = "powerful"
 
-    # Tempo -> combat strength ↔ intellect/nerdy axis
-    if tempo < 60:
-        combat_intellect_desc = (
-            "a highly intellectual, bookish character who relies on strategy and knowledge "
-            "far more than physical strength"
-        )
-    elif tempo < 90:
-        combat_intellect_desc = (
-            "a clever tactician who balances mental sharpness with just enough physical skill "
-            "to hold their own"
-        )
-    elif tempo < 130:
-        combat_intellect_desc = (
-            "a capable fighter with quick reactions, guided by instinct as much as thought"
-        )
-    elif tempo < 160:
-        combat_intellect_desc = (
-            "a fierce close-combat specialist who solves problems head-on rather than with careful planning"
-        )
+    # Percussive
+    perc = max(min(features.get("percussive_ratio", 0), 5), -5)
+    if perc < 0:
+        descriptors["percussive_desc"] = "smooth"
+    elif perc < 1:
+        descriptors["percussive_desc"] = "rhythmic"
     else:
-        combat_intellect_desc = (
-            "a hyper-aggressive powerhouse who charges in first and thinks later"
-        )
+        descriptors["percussive_desc"] = "edgy"
 
-    # Combined character descriptor for prompt generation
-    character_descriptor = (
-        f"A fictional character who is {emotion_desc}. "
-        f"They are depicted with {color_desc}, wearing {style_desc}. "
-        f"They are {combat_intellect_desc}."
-    )
+    # Genre
+    genre_normalized = genre.strip().lower()
+    descriptors["genre_style"] = GENRE_STYLES.get(genre_normalized, "unique, dynamic, expressive")
 
-    return {
-        "tempo_desc": tempo_desc,
-        "brightness_desc": brightness_desc,
-        "rms_desc": rms_desc,
-        "percussive_desc": percussive_desc
-    }
+    # Flavor tags
+    descriptors["flavor_tags"] = features.get("flavor_tags", [])
+
+    return descriptors

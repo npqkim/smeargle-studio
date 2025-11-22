@@ -36,15 +36,19 @@ def analyze_route():
     - JSON: { "genre": str, "features": dict }
     """
     if "audio" not in request.files:
+        print("No audio file in request")
         return jsonify({"error": "No audio file provided"}), 400
 
     audio_file = request.files["audio"]
     genre = request.form.get("genre", "unknown")
 
+    print(f"Received /analyze request for genre: {genre}, file: {audio_file.filename}")
+
     audio_bytes = audio_file.read()
 
     # get features
     features = analyze_audio(audio_bytes)
+    print("Extracted features:", features)
 
     return jsonify({
         "genre": genre,
@@ -72,6 +76,7 @@ def generate_art():
       }
     """
     if "audio" not in request.files:
+        print("No audio file in request")
         return jsonify({"error": "No audio file provided"}), 400
 
     audio_file = request.files["audio"]
@@ -81,27 +86,38 @@ def generate_art():
     if not genre:
         return jsonify({"error": "Genre is missing"}), 400
 
+    print("Genre:", genre)
     audio_bytes = audio_file.read()
+    print("Read audio bytes:", len(audio_bytes), "bytes")
 
     # 1) Extract numeric features
+    print("Extracting audio features...")
     features = analyze_audio(audio_bytes)
+    print("Raw audio features:", features)
 
     # 2) Convert numeric features -> English descriptors
-    print("Raw audio features:", features)
-    descriptors = map_descriptors(features)
+    print("Mapping features to descriptors...")
+    descriptors = map_descriptors(features, genre)
+    print("Descriptors:", descriptors)
 
     # 3) Build OpenAI prompt string
+    print("Building prompt for OpenAI...")
     prompt = build_prompt(genre, descriptors)
+    print("Generated prompt:", prompt)
 
     # 4) Call OpenAI and retrieve generated image URL
+    print("Calling OpenAI API to generate image...")
     image_filename = generate_image(prompt)
+    print("Generated image filename:", image_filename)
 
     if not image_filename:
+        print("Image generation failed")
         return jsonify({"error": "Image generation failed"}), 500
 
     # Build a full URL the frontend can GET. Serve files from the backend folder
     # via the /images/<filename> route defined below.
     image_url = request.host_url.rstrip("/") + "/images/" + image_filename
+    print("Image URL:", image_url)
 
     return jsonify({
         "image_url": image_url
@@ -116,6 +132,7 @@ def serve_image(filename):
     later write files to a different folder, adjust the path accordingly.
     """
     backend_dir = os.path.abspath(os.path.dirname(__file__))
+    print(f"Serving image: {filename} from {backend_dir}")
     return send_from_directory(backend_dir, filename)
 
 @app.route("/generate_art", methods=["POST"])
@@ -124,12 +141,15 @@ def generate_art_route():
     Flask route wrapping the generate_art function.
     This exposes the full pipeline to the frontend.
     """
+    print("Received /generate_art request")
     return generate_art()
 
 @app.route("/", methods=["GET"])
 def home():
+    print("Home route accessed")
     return "Smeargle Studio Backend Running!"
 
 
 if __name__ == "__main__":
+    print("Starting Flask server on port 5001...")
     app.run(host="0.0.0.0", port=5001, debug=True)
